@@ -1,0 +1,100 @@
+Questions:
+
+Based on Emp table 
+Columns are EmpNo, Ename, Job, Salary, Commission, DeptNO 
+Insert 5 records by stroring Null value in some records for commission column.  
+Q1) Get employee no and employee name who works in dept no 
+10 ? 
+
+Q2) Display the employee names of those clerks whose salary 
+> 2000 ? 
+
+Q3) Display name and job of Salesperson & Clerks ?
+ 
+Q4) Display all details of employees whose salary between 
+2000 and 3000 ? 
+
+Q5) Display all details of employees whose dept no is 10, 
+20, or 30 ? 
+
+Q6) Display name of those employees whose commission is 
+NULL ? 
+
+Q7) Display dept no & salary in ascending order of dept no 
+and with in each dept no salary should be in descending 
+order ? 
+
+Q8) Display name of employees having two ‘a’ or ‘A’ chars 
+in the name ? 
+
+Q9) Display the name of the employees whose second char is 
+‘b’ or ‘B’ ?
+ 
+Q10) Display the name of the employees whose first or last 
+char is ‘a’ or ‘A’ ? 
+
+Q11) Display maximum, minimum, average salary of deptno 10 
+employees. 
+
+Q12) Display total number of employees working in deptno 20 
+
+Q13) Display total salary paid to clerks 
+
+Q14) Display system date 
+
+Q15) Display the result of (12*12)/13 
+
+Q16) Display info of ‘raj’ irrespective to the case in 
+which the data is stored
+
+
+
+
+Answers:
+
+create table Emp(EmpNo number(2),Ename varchar(25),Job varchar(25),Salary number(7),Commission number(2),DeptNo number(2));
+desc Emp
+
+insert into Emp values(1,'Bir','S Eng',2000000,10,2);
+insert into Emp values(2,'Sartaj','Data Scientist',1500000,8,1);
+insert into Emp values(3,'Khalsa','Animation',1800000,5,4);
+insert into Emp values(4,'Battey','Web Developer',1200000,7,5);
+insert into Emp values(5,'Tandon','Backend Developer',1000000,3,3);
+
+select * from Emp
+
+update Emp set DeptNo=10 where DeptNo=2
+
+select EmpNo,Ename from Emp where DeptNo=10		-- 1
+select Ename from Emp where Salary>2000			-- 2
+
+update Emp set Commission=NULL where EmpNo in(3,5)
+
+--	select Ename,Job where job in('saleperson','clerk')				3
+select * from Emp where salary>1000000 and salary<2000000		-- 4
+select * from Emp where DeptNo=1 or DeptNo=3 or DeptNo=5		-- 5
+-- or select * from Emp where DeptNo in(1,3,5)
+
+select Ename,Commission from Emp
+select Ename from Emp where Commission is NULL			-- 6
+-- select DeptNo,Salary from Emp order by DeptNo asc and order by Salary desc       WRONG WAY
+select DeptNo,Salary from Emp order by DeptNo asc,Salary desc		-- 7
+
+select Ename from Emp where Ename like '%a%a%'			-- 8
+--	OR select Ename from Emp where Ename like '%a%a%' or Ename like '%A%a%'
+
+--	select Ename from Emp where Ename like '_b%' or Ename like '_B%'			9
+--	select Ename from Emp where Ename like 'a%a' or Ename like 'A%a'			10
+
+select max(Salary) from Emp		-- where clause can be used		11
+select min(Salary) from Emp		-- where clause can be used		11
+select avg(salary) from Emp		-- where clause can be used		11
+
+select count(*) from Emp		-- where clause can be used		12
+
+select sum(salary) from Emp			-- 13
+
+select sysdate from dual			-- 14
+
+
+select (12*12)/13 from dual			-- 15
