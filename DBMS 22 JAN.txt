@@ -1,0 +1,62 @@
+Questions:
+
+Q1) Use the following functions  
+1. chr (n): 
+2. cancat(char1,char2): 
+3. instr(string,char): 
+4. length(n): 
+5. lpad(char1 ,n [,char2]): 
+6. ltrim(string [,char(s)]): 
+7. rpad(char1 ,n [,char2]): 
+8. rtrim(string [,char(s)]): 
+9. replace(char ,search_string , replacement_string): 
+10. substr(string ,position ,substring length): 
+11. initcap(char): 
+12. lower(string): 
+13. upper(string): 
+14. translate(char ,from string ,to string): 
+15. abs(n): 
+16. ceil(n): 
+17. cos(n): 
+18. exp(n): 
+19. floor(n): 
+20. mod(m ,n): 
+21. power(x ,y): 
+22. round(x [,y]): 
+23. sign(n): 
+24. sqrt(n); 
+25. trunc(x ,n): 
+26. sysdate: 
+27. add_months(d ,n): 
+
+
+
+Answers:
+
+select chr(97) from dual
+select concat('bir','singh') from dual
+select instr('birsingh','s') from dual
+select length('birsingh') from dual
+select lpad('bir',8,'*') from dual
+select ltrim('bir','b') from dual
+select rpad('bir',8,'*') from dual
+select rtrim('singh','h') from dual
+select replace('bar','a','i') from dual
+select substr('birmahinder',1,3) from dual
+select initcap('birmahindersingh') from dual
+select lower('SR.BIRMAHINDERSINGH') from dual
+select upper('sr. birmahinder singh') from dual
+select translate('bxrmahxndersxngh','x','i') from dual
+select abs(-5) from dual
+select ceil(38.5) from dual
+select floor(38.5) from dual
+select cos(3.14) from dual
+select exp(2) from dual
+select mod(29,3) from dual
+select power(4,3) from dual
+select round(38.57475432,2) from dual
+select sign(-331) from dual
+select sqrt(16) from dual
+select trunc(38.5575766,2) from dual
+select sysdate from dual
+select add_months(to_date('01-Aug-18','DD-MON-YY'),3) from dual
