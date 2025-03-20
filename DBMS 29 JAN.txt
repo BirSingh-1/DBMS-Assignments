@@ -1,0 +1,139 @@
+Questions:
+1. Display the system date 
+2. Display current day 
+3. Display current month and spell out year 
+4. Display spell out current date 
+5. Check whether it is AM or PM right now 
+6. Display the date of next Friday 
+7. Round the system date on month 
+8. Truncate the system date on month 
+9. Round the system date on year 
+10. Truncate the system date on year 
+11. Find the day after three days 
+12. Create an EMP table (Empno number, Name Varchar2(20), 
+date_of_joining date) 
+13. Display day of date of joining column 
+14. Display those employees who join the company on Monday 
+15. Display those employees who join the company this month 
+16. Display those employees who join the company in last 30 days
+17. Create a table Train having four columns (TrainNo Number (6) 
+primary key, date of departure, time of departure, time of arrival) 
+18. Insert five records into the table Train. 
+19. Display all the three records 
+20. Display the time values inserted in the columns 
+21. Display those trains which arrived on PM 
+22. Display train number who are going to depart in next one hour.
+
+
+Answers:
+
+select sysdate from dual
+
+--	select current_date from dual
+
+--	select to_char(current_timestamp) from dual
+
+--	select to_char(current_timestamp,'hh24:mi:ss') from dual
+
+--	select localtimestamp from dual
+
+--	select to_char(sysdate,'dd-mm-yy') from dual
+
+--	select to_date('january,29,2025','month dd yyyy') from dual
+    
+select to_char(sysdate,'day') from dual
+
+select to_char(sysdate,'day month') from dual
+
+select to_char(current_date,'dd month year') from dual
+--	SELECT to_char(SYSDATE,'DAY, DD MONTH YEAR') FROM DUAL
+--	SELECT to_char(SYSDATE,'DAY, DDSP MONTH YEAR') FROM DUAL
+--	SELECT to_char(SYSDATE,'DAY, DDSPTH MONTH YEAR') FROM DUAL
+--	SELECT to_char(SYSDATE,'DAY, DDTH MONTH YEAR') FROM DUAL
+
+
+
+select to_char(current_timestamp,'am') from dual
+
+select next_day('29-jan-25', 'friday') from dual
+
+select round(to_date('jan,29,25','mon dd yy'),'month') from dual
+
+select trunc(to_date('jan,29,25','mon dd yy'),'month') from dual
+
+select to_char(SYSDATE+3,'DAY') from dual
+--	select to_char(date '2025-02-08'+3,'DAY') from dual
+
+
+
+CREATE TABLE EMP(
+    EmpNo Number(3),
+    Name Varchar2(20),
+    date_of_joining date
+)
+
+INSERT INTO EMP VALUES (1,'Hardik Tandon','19-FEB-2025');
+INSERT INTO EMP VALUES (2,'Devansh Chhabra','20-DEC-2024');
+INSERT INTO EMP VALUES (3,'Harshit Madaan','24-DEC-2024');
+INSERT INTO EMP VALUES (4,'Aishani Shreya','18-JAN-2025');
+INSERT INTO EMP VALUES (5,'Mouli Bhardawaj','06-JAN-2025');
+INSERT INTO EMP VALUES (6,'Amritesh','11-NOV-2024');
+INSERT INTO EMP VALUES (7,'Akshat Singhvi','01-FEB-2025');
+
+SELECT to_char(date_of_joining,'DAY')"Day of Joining" FROM EMP
+
+SELECT * FROM EMP
+WHERE to_char(date_of_joining,'DAY') = to_char(next_day(Sysdate,'MONDAY'),'DAY')
+--	OR
+SELECT * FROM EMP
+WHERE rtrim(to_char(date_of_joining,'DAY')) = 'MONDAY'
+--	OR
+SELECT * FROM EMP
+WHERE to_char(date_of_joining,'FMDAY') = 'MONDAY'
+
+SELECT * FROM EMP
+WHERE Extract(MONTH FROM date_of_joining) = Extract(MONTH FROM SYSDATE)
+
+SELECT * FROM EMP
+WHERE SYSDATE - date_of_joining <= 30
+
+
+
+
+
+CREATE TABLE Train(
+    TrainNo Number(6) PRIMARY KEY,
+    Date_of_Departue date,
+    time_of_departure timestamp,
+    time_of_arrival timestamp
+)
+
+
+INSERT INTO Train VALUES 
+    (14507,'09-FEB-2025','09-FEB-2025 09:20:00.00 AM','09-FEB-2025 01:30:00.00 AM');
+
+INSERT INTO Train VALUES 
+    (14508,'09-FEB-2025', '08-FEB-25 08.06.25.287650 PM' ','09-FEB-2025 05:00:00.00 AM');
+
+INSERT INTO Train VALUES 
+    (14509,'08-FEB-2025', '09-FEB-25 10.20.00.00 AM','09-FEB-2025 05:30:00.00 PM');
+
+INSERT INTO Train VALUES 
+    (14501,'09-FEB-2025','09-FEB-2025 01:20:00.00 PM','09-FEB-2025 04:30:00.00 PM');
+
+INSERT INTO Train VALUES 
+    (14502,'09-FEB-2025','09-FEB-2025 10:20:00.00 AM','09-FEB-2025 07:30:00.00 PM');
+
+INSERT INTO Train VALUES 
+    (14503,'09-FEB-2025','10-FEB-2025 11:20:00.00 AM','10-FEB-2025 01:30:00.00 AM');
+
+
+SELECT * FROM Train
+
+SELECT * FROM Train
+WHERE to_char(time_of_departure,'AM') = 'PM' 
+
+SELECT * FROM Train 
+WHERE to_timestamp(time_of_departure) Between to_timestamp('09-FEB-25 10.00.00.00 AM') and to_timestamp('09-FEB-25 10.00.00.00 AM')+INTERVAL '30' MINUTE
+
+
