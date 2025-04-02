@@ -1,0 +1,160 @@
+Table 1:  SalesPeople 
+Snum is Primary key 
+Sname is Unique constraint 
+ 
+Snum Sname City Comm 
+1001 Peel London 0.12 
+1002 Serres Sanjose 0.13 
+1004 Motika London 0.11 
+1007 Rifkin Barcelona 0.15 
+1003 Axelrod New York 0.10 
+Table 2: Customers 
+Cnum is Primary Key 
+City has not null constraint. 
+Snum is foreign key constraint refers Snum column of SalesPeople table. 
+ 
+Cnum Cname City Snum 
+2001 Hoffman London 1001 
+2002 Giovanni Rome 1003 
+2003 Liu Sanjose 1002 
+2004 Grass Berlin 1002 
+2006 Clemens London 1001 
+2008 Cisneros Sanjose 1007 
+2007 Pereira Rome 1004 
+Table 3: Orders 
+Onum is Primary key 
+Cnum is foreign key refers to Cnum column of Customers table. 
+Snum is foreign key refers Snum column of SalesPeople table. 
+ 
+Onum Amt Odate Cnum Snum 
+3001 18.69 3-10-1990 2008 1007 
+3003 767.19 3-10-1990 2001 1001 
+3002 1900.10 3-10-1990 2007 1004 
+3005 5160.45 3-10-1990 2003 1002 
+3006 1098.16 3-10-1990 2008 1007 
+3009 1713.23 4-10-1990 2002 1003 
+3007 75.75 4-10-1990 2004 1002 
+3008 4273.00 5-10-1990 2006 1001 
+3010 1309.95 6-10-1990 2004 1002 
+3011 9891.88 6-10-1990 2006 1001
+
+
+1)Create the above three tables and insert those records. 
+2)Display all the salesperson whose all orders worth is more than Rs. 2000. 
+3)Display the salesperson id handling at least two customers.
+4)Display the salesperson names handling at least two customers.  
+5)Display the number of Salespeople belonging to London and Paris. 
+6)Display the customer names corresponding to salesperson belonging to London and Paris.  
+7)Display the customer names whose order amount is worth 1200.
+8)Display the customer names who belong to the same city as their salesperson.
+9)Display the salesperson names having commission more than 10 percent and who handled more than two customers.
+10)Display the customer’s name who orders exactly one order and his salesperson name. 
+11)Insert the details of a salesperson in the table who is a new joined  
+and did not handle any customer. Write a query for the salesperson       
+who has not handle any customer. 
+12)Write a query that counts the number of Salespeople registering orders 
+for each day. 
+13)Find out the no. of Salesperson who belongs to same city and have same 
+commission percentage. 
+
+
+
+
+
+
+
+create table sp(
+    snum number(4) constraint snum_pk primary key,
+    sname varchar(10) constraint snmae_u unique,
+    city varchar(12),
+    comm number(2,2)
+)
+
+    
+create table customer(
+    cnum number(4) constraint cnum_pk primary key,
+    cname varchar(10),
+    city varchar(9) not null,
+    snum number(4),
+    constraint snum_fk foreign key(snum) references sp(snum)
+)
+
+create table orders(
+    onum number(4) constraint onum_pk primary key,
+    amt number(6,2),
+    odate date,
+    cnum number(4),
+    snum number(4),
+    constraint snumo_fk foreign key(snum) references sp(snum),
+    constraint cnum_fk foreign key(cnum) references customer(cnum)
+)
+
+
+insert into sp values(1001,'Peel','London',.12);
+insert into sp values(1002,'Serres','Sanjose',.13);
+insert into sp values(1004,'Motika','London',.11);
+insert into sp values(1007,'Rifkin','Barcelona',.15);
+insert into sp values(1003,'Axelrod','New York',.10)
+
+insert into customer values(2001,'Hoffman','London',1001);
+insert into customer values(2002,'Giovanni','Rome',1003);
+insert into customer values(2003,'Liu','Sanjose',1002);
+insert into customer values(2004,'Grass','Berlin',1002);
+insert into customer values(2006,'Clemens','London',1001);
+insert into customer values(2008,'Cisneros','Sanjose',1007);
+insert into customer values(2007,'Pereira','Rome',1004)
+
+
+
+
+insert into orders values(3001,18.69,'03-Dec-1990',2008,1007);
+insert into orders values(3003,767.19,'03-Dec-1990',2001,1001);
+insert into orders values(3002,1900.10,'03-Dec-1990',2007,1004);
+insert into orders values(3005,5160.45,'03-Dec-1990',2003,1002);
+insert into orders values(3006,1098.16,'03-Dec-1990',2008,1007);
+insert into orders values(3009,1713.23,'04-Dec-1990',2002,1003);
+insert into orders values(3007,75.75,'04-Dec-1990',2004,1002);
+insert into orders values(3008,4273.00,'05-Dec-1990',2006,1001);
+insert into orders values(3010,1309.95,'06-Dec-1990',2004,1002);
+insert into orders values(3011,9891.88,'06-Dec-1990',2006,1001)
+
+
+select * from sp where snum in(select snum from orders group by snum having sum(amt)>2000)	-- 2
+
+select snum from sp where snum in(select snum from customer group by snum having count(snum)>=2)	-- 3
+-- SELECT snum FROM customer GROUP BY snum HAVING COUNT(cnum) >= 2;
+
+    
+select sname from sp where snum in(select snum from customer group by snum having count(snum)>=2)	-- 4
+
+select count(*) from sp where city in('London','Paris')	-- 5
+
+select cname from customer where snum in(select snum from sp where city in ('London','Paris'))	-- 6
+-- SELECT customer.cname, sp.sname, sp.city FROM customer JOIN sp ON customer.snum = sp.snum WHERE sp.city 
+    	-- IN ('London', 'Paris');
+
+select cname from customer where cnum in(select cnum from orders group by cnum having sum(amt)>1200)	-- 7
+
+select cname from customer c where city in (select city from sp s where s.snum=c.snum)	-- 8
+
+select sname from sp where comm>.10 and snum in (select snum from customer group by snum having count(snum)>2)	-- 9
+
+select cname ,(select sname from sp s where s.snum=c.snum) as "sname" from customer c where cnum in(select cnum 
+    from orders group by cnum having count(onum)=1)	-- 10
+
+--	SELECT c.cname, s.sname FROM customer c JOIN sp s ON c.snum = s.snum WHERE c.cnum IN (SELECT o.cnum 
+	-- FROM orders o GROUP BY o.cnum HAVING COUNT(o.onum) = 1);
+
+insert into sp values(1005,'Join','Milan',.50)
+select snum,sname from sp where snum not in(select snum from customer group by snum having count(cnum)>0)	-- 11
+
+
+select odate,count(snum) from orders group by(odate)	--12
+
+select city, comm, count(snum) from sp group by(city,com) having count(snum)>1	-- 13
+
+
+
+
+
+
